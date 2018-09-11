@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <!-- <script src="num-pair.js"></script> -->
+    <script src="pairs.service.js"></script>
+    <script src="main.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="headContainer">
+            <div>
+                <form>
+                    <div class="forRadio">
+                        <input type="radio" name="lang" value="zh" checked onchange="onLangChange(this)">中文
+                    </div>
+                    <div class="forRadio">
+                        <input type="radio" name="lang" value="en" onchange="onLangChange(this)">English
+                    </div>
+                </form>
+            </div>
+            <div>
+                <span class="zh">大本詩歌第?首:</span>
+                <span class="en">English Hymn's number:</span>
+            </div>
+            <input id="inputnum" type="number" onchange="onNumPairChanged(this.value)" onkeyup="onNumPairChanged(this.value)">
+
+            <div id="pairinfo"></div>
+            <button onclick='openWindow("zh")'>中文</button>
+            <button onclick='openWindow("en")'>English</button>
+            <form class="cform" target="csearch" action="http://mail.twgbr.org.tw/~webadm/bookindex/search.php" method="POST" hidden>
+                <input type="text" name="SearchItem" value="044">
+                <input id="nhymn" type="text" name="MYITEM" value="1">
+                <input type="submit" value="Search">
+            </form>
+
+            <div>
+                <form>
+                    <div class="forRadio">
+                        <input type="radio" name="showframes" value="zh" onchange="onShowFrameChanged(this)">只中文
+                    </div>
+                    <div class="forRadio">
+                        <input type="radio" name="showframes" value="both" onchange="onShowFrameChanged(this)" checked>雙語
+                    </div>
+                    <div class="forRadio">
+                        <input type="radio" name="showframes" value="en" onchange="onShowFrameChanged(this)">Just English
+                    </div>
+                </form>
+            </div>
+        </div>
+        <h2>以下內容取自 <a href="http://www.churchinmontereypark.org/">蒙特利公園市召會網站</a> 與 <a href="http://mail.twgbr.org.tw/~webadm/bookindex/">書房目錄搜尋</a></h2>
+        <div class="contentContainer">
+            <iframe id="zhiframe" name="csearch" src="http://mail.twgbr.org.tw/~webadm/bookindex/search.php" frameborder="0"></iframe>
+            <!-- <iframe #csearch name="csearch" id="csearch" src="http://mail.twgbr.org.tw/~webadm/bookindex/search.php" frameborder="0"></iframe> -->
+            <iframe id="eniframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+</body>
+
+</html>
