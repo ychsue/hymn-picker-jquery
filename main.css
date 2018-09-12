@@ -29,3 +29,24 @@ iframe {
     margin: 4px 20px;
     display: inline;
 }
+
+.btnContainer {
+    overflow-y: auto;
+    height: 48px;
+}
+
+.cBtn {
+    border-radius: 50%;
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    touch-action: none;
+}
+
+.cBtn:hover {
+    background-color: aqua;
+}
+
+.cBtn:active {
+    background-color: white;
+}
