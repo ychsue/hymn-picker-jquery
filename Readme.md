@@ -5,4 +5,6 @@
 In this code, it will show both chinese and english hymns at the same page.
 The datas ara gotten from:
 
-[蒙特利公園市召會網站](http://www.churchinmontereypark.org/) and [書房目錄搜尋](http://mail.twgbr.org.tw/~webadm/bookindex/).
+[hymnal.net](https://hymnal.net/), [蒙特利公園市召會網站](http://www.churchinmontereypark.org/) and [書房目錄搜尋](http://mail.twgbr.org.tw/~webadm/bookindex/).
+
+Besides, this one is based on jquery.
