@@ -1,6 +1,7 @@
 isChinese = true;
 
 selNPair = null;
+hymnType = 0; // 0: 大本，   1: 補充本,     2: 兒童
 
 numChange$ = new rxjs.Subject();
 
@@ -17,12 +18,16 @@ $(document).ready(function() {
     numChange$.pipe(
         rxjs.operators.debounceTime(300),
         rxjs.operators.distinctUntilChanged()
-    ).subscribe(numberChanged);
+    ).subscribe(num => {
+        if (hymnType === 1) {num = 's' + num;}
+        numberChanged(num);
+    });
 });
 
 function numberChanged(num) {
     selNPair = window.bigPairs.find(function(pair) {
-        return (isChinese) ? (pair.zh === +num) : (pair.en === +num);
+        let hnum = num;
+        return (isChinese) ? (pair.zh.toString() === hnum.toString()) : (pair.en.toString() === hnum.toString());
     });
     if (!!selNPair) {
         // * [2018-09-09 20:43] Once I get the selNPair, update pages
@@ -32,9 +37,42 @@ function numberChanged(num) {
         } else {
             $('#pairinfo').text('');
         }
-        $("#nhymn").val(selNPair.zh);
+        let zhNhymn = selNPair.zh;
+        if (!!zhNhymn.lastIndexOf && zhNhymn.lastIndexOf('s')===0) {
+            zhNhymn = zhNhymn.substring(1);
+            if(hymnType!==1) {setHymnType(1);} 
+        } else {
+            if(hymnType!==0) {setHymnType(0);}
+        }
+        $("#nhymn").val(zhNhymn);
         $(".cform").get(0).submit();
     }
+}
+
+function onTypeOfHymnChange(radio) {
+    hymnType = +radio.value;
+    let ntype = "044";
+    if (hymnType===0) {ntype = "044"}
+    else if (hymnType===1) {ntype = "045"}
+    else if (hymnType===2) {ntype = "046"}
+    $("#hymnType").val(ntype);
+    let num = $("#inputnum").get(0).value;
+    if (num > 0) {
+        if (hymnType === 1) {num = 's' + num;}
+        numberChanged(num);
+    }
+}
+
+function setHymnType(type) {
+    if (type === 0) {
+        $("#rdTypeBig").prop('checked',true);
+        onTypeOfHymnChange($("#rdTypeBig")[0]);
+    }
+    else if (type === 1) {
+        $("#rdTypeSup").prop('checked',true);
+        onTypeOfHymnChange($("#rdTypeSup")[0]);
+    }
+    else {}
 }
 
 function onLangChange(radio) {
@@ -50,8 +88,9 @@ function onLangChange(radio) {
     }
     updateBtns();
     // * [2018-09-09 21:02] Update pages
-    num = $("#inputnum").get(0).value;
+    let num = $("#inputnum").get(0).value;
     if (num > 0) {
+        if (hymnType===1) {num = 's' + num;}
         numberChanged(num);
     }
 }
@@ -92,7 +131,14 @@ function openWindow(lang) {
     if (!!selNPair === false) { return; }
     switch (lang) {
         case "zh":
-            window.open('https://www.hymnal.net/en/hymn/ch/' + selNPair.zh);
+            let hnum = selNPair.zh;
+            const isSup = (!!hnum.lastIndexOf && hnum.lastIndexOf('s')===0);
+            if(isSup===false) {
+                window.open('https://www.hymnal.net/en/hymn/ch/' + hnum);
+            } else if (isSup===true) {
+                hnum = hnum.substring(1);
+                window.open('https://www.hymnal.net/en/hymn/ts/' + hnum);
+            }
             break;
         case "en":
             window.open('https://www.hymnal.net/en/hymn/h/' + selNPair.en);
@@ -119,6 +165,9 @@ function onAddBtn(pair) {
     btn.on('click', function(ev) {
         const target = ev.currentTarget;
         const sel = $(this).data('selNPair');
+        if (!!sel.lastIndexOf && sel.lastIndexOf('s')===0) {setHymnType(1);}
+        else {setHymnType(0);}
+        
         numberChanged((isChinese) ? sel.zh : sel.en);
     });
 

@@ -14,8 +14,8 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <!-- <script src="num-pair.js"></script> -->
-    <script src="pairs.service.js"></script>
-    <script src="main.js"></script>
+    <script src="pairs-new.service.js?5"></script>
+    <script src="main.js?5"></script>
 </head>
 
 <body>
@@ -33,8 +33,12 @@
                 </form>
             </div>
             <div>
+                <input type="radio" name="typeOfHymn" id="rdTypeBig" value="0" checked onchange="onTypeOfHymnChange(this)">
                 <span class="zh">大本詩歌第?首:</span>
                 <span class="en">English Hymn's number:</span>
+                <input type="radio" name="typeOfHymn" id="rdTypeSup" value="1" onchange="onTypeOfHymnChange(this)">
+                <span class="zh">補充本第?首:</span>
+                <span class="en">2nd Type of English Hymn's number:</span>
             </div>
             <input id="inputnum" type="number" onchange="onNumPairChanged(this.value)" onkeyup="onNumPairChanged(this.value)">
 
@@ -42,7 +46,7 @@
             <button onclick='openWindow("zh")'>中文</button>
             <button onclick='openWindow("en")'>English</button>
             <form class="cform" target="csearch" action="http://mail.twgbr.org.tw/~webadm/bookindex/search.php" method="POST" hidden>
-                <input type="text" name="SearchItem" value="044">
+                <input type="text" id="hymnType" name="SearchItem" value="044">
                 <input id="nhymn" type="text" name="MYITEM" value="1">
                 <input type="submit" value="Search">
             </form>
